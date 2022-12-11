@@ -1,15 +1,18 @@
 export class Robotgame {
     poles = ['N', 'E', 'S', 'W'];
     robotInSpace = false;
-    robot_direction = this.poles[0];
+    init_direction;
+    robot_direction = this.poles.indexOf(this.init_direction);
 
     position_final = ""
 
-    constructor(sizeX, sizeY, xPos, yPos) {
+    constructor(sizeX, sizeY, xPos, yPos, direction) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.xPos = xPos;
         this.yPos = yPos;
+        this.init_direction = direction
+        console.log(sizeX, sizeY, xPos, yPos, direction);
     }
 
     // utility
@@ -46,6 +49,19 @@ export class Robotgame {
         return this.robot_direction;
     }
 
+    
+    robotInSpaceCheck() {
+        if (this.xPos > this.sizeX ||
+            this.yPos > this.sizeY ||
+            this.xPos < 0 ||
+            this.yPos < 0
+        ) {
+            this.position_final = "Robot has fallen on floor"
+            return this.robotInSpace = true;
+        }
+    }
+
+
     robotMove(driveString) {
         // for each character in the string
         // turn on R/L
@@ -72,21 +88,13 @@ export class Robotgame {
                     this.robotInSpaceCheck();
                 }
             } else {
+                console.log("Robot has fallen on floor")
                 break;
             }
+            console.log(this.xPos, this.yPos, this.movement[m], m, this.robot_direction);
         }
     }
 
-    robotInSpaceCheck() {
-        if (this.xPos > this.sizeX ||
-            this.yPos > this.sizeY ||
-            this.xPos < 0 ||
-            this.yPos < 0
-        ) {
-            this.position_final = "Robot has fallen on floor"
-            return this.robotInSpace = true;
-        }
-    }
 
     play(value) {
         this.robotMove(value);
